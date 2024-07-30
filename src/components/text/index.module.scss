@@ -1,4 +1,5 @@
 @mixin typography($size: 18, $weight: 400, $family: 'Open Sans') {
+	margin-bottom: 4px;
 	color: #000000;
 	font-weight: $weight;
 	font-size: $size;
