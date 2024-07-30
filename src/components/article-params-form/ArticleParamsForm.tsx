@@ -25,7 +25,7 @@ interface IArticleParamsForm {
 
 export const ArticleParamsForm = (props: IArticleParamsForm) => {
 	const { setParams } = props;
-	const [state, setState] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [currentValue, setCurrentValue] = useState(defaultArticleState);
 	const rootRef = useRef<HTMLDivElement>(null);
 
@@ -48,14 +48,13 @@ export const ArticleParamsForm = (props: IArticleParamsForm) => {
 		setParams(defaultArticleState);
 	};
 
-	const handleMouseCLickClose = (event: Event) => {
-		const { target } = event;
-		if (target instanceof Node && !rootRef.current?.contains(target)) {
-			setState(false);
-		}
-	};
-
 	useEffect(() => {
+		const handleMouseCLickClose = (event: Event) => {
+			const { target } = event;
+			if (target instanceof Node && !rootRef.current?.contains(target)) {
+				setIsMenuOpen(false);
+			}
+		};
 		document.addEventListener('mousedown', handleMouseCLickClose);
 
 		return () => {
@@ -65,13 +64,17 @@ export const ArticleParamsForm = (props: IArticleParamsForm) => {
 
 	return (
 		<>
-			<ArrowButton isOpen={state} onClick={() => setState((prev) => !prev)} />
+			<ArrowButton
+				isOpen={isMenuOpen}
+				onClick={() => setIsMenuOpen((prev) => !prev)}
+			/>
 			<aside
 				ref={rootRef}
-				onReset={handleResetChange}
-				onSubmit={handleSubmitChange}
-				className={clsx(styles.container, state && styles.container_open)}>
-				<form className={styles.form}>
+				className={clsx(styles.container, isMenuOpen && styles.container_open)}>
+				<form
+					className={styles.form}
+					onReset={handleResetChange}
+					onSubmit={handleSubmitChange}>
 					<Text size={31} weight={800} uppercase>
 						Задайте параметры
 					</Text>
